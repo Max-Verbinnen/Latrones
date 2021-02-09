@@ -6,7 +6,7 @@ let gameActive = false;
 let yourTurn;
 
 // Socket IO
-const socket = io.connect("http://localhost:4000");
+const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
 
 // Initial Screen
 const initialScreen = document.querySelector(".initialScreen");
