@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="shortcut icon" href="#">
+  <title>Latrones</title>
+</head>
+<body>
+  <div class="initialScreen">
+    <header>
+      <div class="left">
+        <h1>You've always wanted to play chess like a true Roman, right?</h1>
+        <p>Well, now you can in the multiplayer version of <i>Ludus Latrunculorum</i>.</p>
+        <div class="divide">Divide et impera!</div>
+      </div>
+      <div class="right">
+        <img src="./assets/hero-img.svg" alt="hero img icons">
+      </div>
+    </header>
+    <div class="join-section" id="join-secion">
+      <button class="btn new-game-btn" type="submit" id="newGameButton">Create Game</button>
+      <div class="or">OR</div>
+      <div class="input-group">
+        <input type="text" placeholder="Enter Game Code" id="gameCodeInput">
+        <button class="btn join-game-btn" type="submit" id="joinGameButton">Join Game</button>
+      </div>
+      <div class="err-msg">‎‎</div>
+    </div>
+  </div>
+
+  <div class="game-section">
+    <div class="game-code">
+      <h1>Game code: <span id="gameCodeDisplay"></span></h1>
+    </div>
+    <div class="grid">
+      
+    </div>
+  </div>
+
+  <div class="game-over-container">
+    <div class="game-over">
+      <img src="./assets/cancel.svg" alt="close window" class="exit">
+      <h1></h1>
+      <p></p>
+      <a href="/">Back to main menu</a>
+    </div>
+  </div>
+
+  <footer>
+    Made with ❤ by Max Verbinnen
+  </footer>
+  
+
+  <!-- Audio Fragments -->
+  <audio preload="auto" id="moveSound">
+    <source src="https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3" type="audio/mpeg">
+  </audio>
+  <audio preload="auto" id="captureSound">
+    <source src="https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="/app.js"></script>
+</body>
+</html>

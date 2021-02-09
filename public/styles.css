@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap');
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  max-width: 90%;
+  margin: 0 auto;
+  background-color: rgb(238, 238, 238);
+}
+
+img {
+  display: block;
+}
+
+/* Initial Screen Styles */
+header {
+  margin: 10rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+header .left {
+  max-width: 40rem;
+}
+
+header .left h1 {
+  font-size: 2.5rem;
+}
+
+header .left p {
+  margin: 1rem 0;
+  font-size: 1.25rem;
+  font-weight: lighter;
+}
+
+header .left .divide {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  font-weight: bolder;
+  background-color: #769656;
+  margin-top: 0.25rem;
+  padding: 0.57rem 1rem;
+  border-radius: 0.5rem;
+}
+
+header .right {
+  width: 15rem;
+}
+
+header .right img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem;
+}
+
+.join-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  padding: 0.57rem 1rem;
+  border: none;
+  outline: none;
+  background-color: #d8d894;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: bolder;
+}
+
+#gameCodeInput {
+  padding: 0.57rem 1rem;
+  outline: none;
+  border: 2px solid #769656;
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.or {
+  margin: 1rem 0;
+}
+
+.err-msg {
+  display: block;
+  color: red;
+  margin-top: 0.4rem;
+}
+
+@media screen and (max-width: 1000px) {
+  header {
+    flex-direction: column;
+  }
+  .left {
+    margin-bottom: 4rem;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .input-group {
+    flex-direction: column;
+  }
+  #gameCodeInput {
+    margin-bottom: 1.5rem;
+  }
+  html {
+    font-size: 80%;
+  }
+}
+
+/* Actual Game Styles */
+.game-section {
+  width: 640px;
+  display: none;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.game-code {
+  display: none;
+  text-align: center;
+  margin-bottom: -3rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 80px);
+  border-radius: 0.2rem;
+  background: url("./assets/bg.jpg") no-repeat center;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.area {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fill {
+  width: 70px;
+  height: 70px;
+  cursor: grab;
+}
+
+.fill.bp {
+  background: url("./assets/b-pawn.svg") no-repeat center;
+}
+
+.fill.wp {
+  background: url("./assets/w-pawn.svg") no-repeat center;
+}
+
+.fill.bd {
+  background: url("./assets/b-dux.svg") no-repeat center;
+}
+
+.fill.wd {
+  background: url("./assets/w-dux.svg") no-repeat center;
+}
+
+.hovered {
+  position: relative;
+  /* background: #f4f4f4; */
+  border: 2px black;
+  border-style: dashed;
+}
+
+.invisible {
+  display: none;
+}
+
+.area.option::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Game Over */
+.game-over-container {
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.game-over-container.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.game-over-container.active .game-over {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.game-over {
+  background-color: #fff;
+  text-align: center;
+  border-radius: 0.5rem;
+  position: relative;
+  transform: translateY(-100px);
+  opacity: 0;
+  transition: all 0.5s;
+}
+
+.exit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  font-weight: bolder;
+  cursor: pointer;
+  filter: invert(100%) sepia(3%) saturate(0%) hue-rotate(212deg) brightness(103%) contrast(105%);
+}
+
+.game-over h1 {
+  font-size: 3rem;
+  background-color: #769656;
+  color: white;
+  padding: 3rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.game-over p {
+  margin: 1.5rem 0;
+}
+
+.game-over a {
+  display: inline-block;
+  margin-bottom: 2rem;
+  padding: 0.57rem 1rem;
+  background-color: #d8d894;
+  text-decoration: none;
+  color: black;
+  border-radius: 0.5rem;
+  font-weight: bolder;
+}
+
+
+/* Footer */
+footer {
+  text-align: center;
+}
