@@ -94,8 +94,7 @@ const init = () => {
   gameSection.style.display = "grid";
   gameCode.style.display = "block";
   gameActive = true;
-  // setTimeout(() => game(), 100);
-  game();
+  setTimeout(() => game(), 0);
 }
 
 const reset = () => {
