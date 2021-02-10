@@ -7,6 +7,7 @@ let yourTurn;
 
 // Socket IO
 const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
+// const socket = io.connect("http://localhost:4000");
 
 // Initial Screen
 const initialScreen = document.querySelector(".initialScreen");
@@ -91,7 +92,7 @@ joinGameBtn.addEventListener("click", () => {
 const init = () => {
   initialScreen.style.display = "none";
   footer.style.display = "none";
-  gameSection.style.display = "grid";
+  gameSection.style.display = "flex";
   gameCode.style.display = "block";
   gameActive = true;
   setTimeout(() => game(), 500);
@@ -109,7 +110,6 @@ const reset = () => {
 
 // Client Side JS
 function game() {
-  console.log("Game Started")
   const fill = document.querySelectorAll('.fill');
   let empties = document.querySelectorAll('.area');
   let playSound = document.querySelector("#moveSound");
