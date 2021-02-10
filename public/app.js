@@ -110,6 +110,7 @@ const reset = () => {
 
 // Client Side JS
 function game() {
+  console.log("Game Started")
   const fill = document.querySelectorAll('.fill');
   let empties = document.querySelectorAll('.area');
   let playSound = document.querySelector("#moveSound");
