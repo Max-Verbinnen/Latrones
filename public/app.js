@@ -48,6 +48,7 @@ function handleMove({html, capture}) {
   // When you get move back from server it is your turn
   yourTurn = true;
   // Play audio
+  console.log(capture);
   if (capture) {
     captureSound.play();
   } else {
@@ -201,7 +202,9 @@ function game() {
     }, 0);
 
     // Did a pawn take another pawn?
+    let took = false;
     if (didTake(draggedElement)) {
+      took = true;
       captureSound.play();
       didTake(draggedElement).innerHTML = "";
     }
@@ -210,7 +213,7 @@ function game() {
     if (options.includes(this) && yourTurn && isYourPiece(draggedElement) && gameActive) {
       // After moving it's your opponent's turn
       yourTurn = false;
-      setTimeout(() => socket.emit("move", {html: grid.innerHTML, capture: didTake(draggedElement)}), 0);
+      setTimeout(() => socket.emit("move", {html: grid.innerHTML, capture: took}), 0);
     }
   }
 
