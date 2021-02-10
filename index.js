@@ -61,5 +61,6 @@ io.on("connection", client => {
     client.join(roomName);
     client.number = 2;
     client.emit("init", {html: state[roomName], number: 2});
+    io.sockets.to(roomName).emit("joined");
   }
 });

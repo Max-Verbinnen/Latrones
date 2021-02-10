@@ -12,6 +12,7 @@ captureSound.volume = 0.4;
 let playerNumber;
 let gameActive = false;
 let yourTurn;
+let fullGame;
 
 // Socket IO
 const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
@@ -31,6 +32,7 @@ const errorMessage = document.querySelector(".err-msg");
 socket.on("init", handleInit);
 socket.on("move", handleMove);
 socket.on("gameCode", handleGameCode);
+socket.on("joined", handleJoined)
 socket.on("unknownGame", handleUnknownGame);
 socket.on("tooManyPlayers", handleTooManyPlayers);
 socket.on("gameOver", handleGameOver);
@@ -48,7 +50,6 @@ function handleMove({html, capture}) {
   // When you get move back from server it is your turn
   yourTurn = true;
   // Play audio
-  console.log(capture);
   if (capture) {
     captureSound.play();
   } else {
@@ -59,6 +60,10 @@ function handleMove({html, capture}) {
 
 function handleGameCode(code) {
   gameCodeDisplay.innerText = code;
+}
+
+function handleJoined() {
+  fullGame = true;
 }
 
 function handleUnknownGame() {
@@ -154,7 +159,7 @@ function game() {
     
     // Display dots on free areas
     const options = isMoveValid(draggedElement);
-    if (yourTurn && isYourPiece(draggedElement) && gameActive) {
+    if (yourTurn && isYourPiece(draggedElement) && gameActive && fullGame) {
       options.forEach(option => option.classList.add("option"));
     }
   }
@@ -187,7 +192,7 @@ function game() {
 
     // Is the move valid?
     const options = isMoveValid(draggedElement);
-    if (options.includes(this) && yourTurn && isYourPiece(draggedElement) && gameActive) {
+    if (options.includes(this) && yourTurn && isYourPiece(draggedElement) && gameActive && fullGame) {
       playSound.play();
       this.append(draggedElement);
     }
@@ -210,7 +215,7 @@ function game() {
     }
 
     // Socket IO Integration
-    if (options.includes(this) && yourTurn && isYourPiece(draggedElement) && gameActive) {
+    if (options.includes(this) && yourTurn && isYourPiece(draggedElement) && gameActive && fullGame) {
       // After moving it's your opponent's turn
       yourTurn = false;
       setTimeout(() => socket.emit("move", {html: grid.innerHTML, capture: took}), 0);
