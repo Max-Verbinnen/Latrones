@@ -19,10 +19,10 @@ io.on("connection", client => {
   client.on("newGame", handleNewGame);
   client.on("joinGame", handleJoinGame);
 
-  function handleMove(html) {
+  function handleMove({html, capture}) {
     let roomName = clientRooms[client.id];
     state[roomName] = html;
-    client.broadcast.emit("move", state[roomName]);
+    client.broadcast.emit("move", {html: state[roomName], capture: capture});
   }
 
   function handleWinner(winner) {

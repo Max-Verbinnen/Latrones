@@ -1,6 +1,14 @@
-// Global variables
+// Global DOM elements
 const grid = document.querySelector(".grid");
 const gameSection = document.querySelector(".game-section");
+
+// Audio
+let playSound = document.querySelector("#moveSound");
+let captureSound = document.querySelector("#captureSound");
+playSound.volume = 0.4;
+captureSound.volume = 0.4;
+
+// Global variables
 let playerNumber;
 let gameActive = false;
 let yourTurn;
@@ -35,10 +43,16 @@ function handleInit(obj) {
   }
 }
 
-function handleMove(html) {
+function handleMove({html, capture}) {
   grid.innerHTML = html;
   // When you get move back from server it is your turn
   yourTurn = true;
+  // Play audio
+  if (capture) {
+    captureSound.play();
+  } else {
+    playSound.play();
+  }
   setTimeout(() => game(), 100);
 }
 
@@ -112,13 +126,7 @@ const reset = () => {
 function game() {
   const fill = document.querySelectorAll('.fill');
   let empties = document.querySelectorAll('.area');
-  let playSound = document.querySelector("#moveSound");
-  let captureSound = document.querySelector("#captureSound");
   let draggedElement = null;
-
-  // Audio
-  playSound.volume = 0.4;
-  captureSound.volume = 0.4;
 
   // Turn board if black
   if (playerNumber === 2) {
@@ -202,7 +210,7 @@ function game() {
     if (options.includes(this) && yourTurn && isYourPiece(draggedElement) && gameActive) {
       // After moving it's your opponent's turn
       yourTurn = false;
-      setTimeout(() => socket.emit("move", grid.innerHTML), 0);
+      setTimeout(() => socket.emit("move", {html: grid.innerHTML, capture: didTake(draggedElement)}), 0);
     }
   }
 

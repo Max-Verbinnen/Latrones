@@ -12,6 +12,7 @@ body {
   max-width: 90%;
   margin: 0 auto;
   background-color: rgb(238, 238, 238);
+  transition: all 0.5s;
 }
 
 img {
