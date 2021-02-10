@@ -22,7 +22,7 @@ io.on("connection", client => {
   function handleMove({html, capture}) {
     let roomName = clientRooms[client.id];
     state[roomName] = html;
-    client.broadcast.emit("move", {html: state[roomName], capture: capture});
+    io.sockets.to(roomName).emit("move", {html: state[roomName], capture: capture});
   }
 
   function handleWinner(winner) {
