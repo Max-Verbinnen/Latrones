@@ -1,6 +1,7 @@
 // Global DOM elements
 const grid = document.querySelector(".grid");
 const gameSection = document.querySelector(".game-section");
+const opponentState = document.querySelector(".opponent-state");
 
 // Audio
 let playSound = document.querySelector("#moveSound");
@@ -64,6 +65,11 @@ function handleGameCode(code) {
 
 function handleJoined() {
   fullGame = true;
+  if (playerNumber === 1) {
+    opponentState.innerText = "Your opponent has joined.";
+  } else {
+    opponentState.innerText = "Game on!";
+  }
 }
 
 function handleUnknownGame() {
@@ -128,8 +134,35 @@ const reset = () => {
   gameSection.style.display = "none";
 }
 
+
+// Chat Application
+const output = document.querySelector(".output");
+const form = document.querySelector(".chat-form");
+const message = document.querySelector(".chat-form input");
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  if (message.value.length > 0) {
+    socket.emit("chat", {msg: message.value, nr: playerNumber});
+    message.value = "";
+  }
+});
+
+socket.on("chat", ({msg, nr}) => {
+  if (nr === playerNumber) {
+    output.innerHTML += `<p class="chat-msg"><strong>You</strong>: ${msg}</p>`;
+  } else {
+    output.innerHTML += `<p class="chat-msg"><strong>Opponent</strong> ${msg}</p>`;
+  }
+
+  // Automatic scroll for new msg
+  output.scrollTop = output.scrollHeight;
+});
+
+
 // Client Side JS
 function game() {
+  // Board itself
   const fill = document.querySelectorAll('.fill');
   let empties = document.querySelectorAll('.area');
   let draggedElement = null;

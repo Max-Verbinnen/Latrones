@@ -7,6 +7,21 @@
   box-sizing: border-box;
 }
 
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 100%;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 20px;
+  border: transparent;
+}
+
 body {
   font-family: "Quicksand", sans-serif;
   max-width: 90%;
@@ -128,11 +143,10 @@ header .right img {
 
 /* Actual Game Styles */
 .game-section {
-  width: 640px;
+  width: 100%;
   display: none;
   align-items: center;
-  justify-content: space-evenly;
-  flex-direction: column;
+  justify-content: center;
   margin: 0 auto;
   min-height: 100vh;
 }
@@ -149,6 +163,7 @@ header .right img {
   background: url("./assets/bg.jpg") no-repeat center;
   border-radius: 1rem;
   padding: 1rem;
+  margin-right: 7rem;
 }
 
 .area {
@@ -203,6 +218,56 @@ header .right img {
   height: 10px;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.4);
+}
+
+/* Chat Styles */
+.chat {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chat-heading p {
+  text-align: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgb(226, 226, 226);
+}
+
+.output {
+  height: 200px;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin: 1rem 0;
+}
+
+.chat-msg {
+  margin-bottom: 0.5rem;
+  max-width: 250px;
+  overflow-wrap: break-word;
+}
+
+.chat-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-form input {
+  padding: 0.57rem 1rem;
+  font-size: 1rem;
+  border: 1px solid rgb(226, 226, 226);
+  outline: none;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.chat-form .submit-btn {
+  font-size: 1rem;
+  border-radius: 0;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 /* Game Over */
