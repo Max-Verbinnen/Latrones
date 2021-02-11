@@ -66,9 +66,9 @@ function handleGameCode(code) {
 function handleJoined() {
   fullGame = true;
   if (playerNumber === 1) {
-    opponentState.innerText = "Your opponent has joined.";
+    opponentState.innerHTML = "Your opponent has joined.";
   } else {
-    opponentState.innerText = "Game on!";
+    opponentState.innerHTML = "Game on!";
   }
 }
 

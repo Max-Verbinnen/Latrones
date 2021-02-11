@@ -228,10 +228,25 @@ header .right img {
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
 }
 
-.chat-heading p {
+.opponent-state {
   text-align: center;
   padding: 0.5rem 0;
   border-bottom: 1px solid rgb(226, 226, 226);
+}
+
+/* Loading animation (3 dots) */
+.loading::after {
+  display: inline-block;
+  animation: dotty steps(1,end) 3s infinite;
+  content: '';
+}
+
+@keyframes dotty {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+  100% { content: ''; }
 }
 
 .output {
