@@ -62,6 +62,12 @@ function handleMove({html, capture}) {
 
 function handleGameCode(code) {
   gameCodeDisplay.innerText = code;
+
+  // Copy game code to clipboard
+  const copy = document.querySelector(".copy");
+  copy.addEventListener("click", e => {
+    navigator.clipboard.writeText(code);
+  });
 }
 
 function handleJoined() {

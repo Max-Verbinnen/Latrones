@@ -151,11 +151,6 @@ header .right img {
   min-height: 100vh;
 }
 
-.game-code {
-  display: none;
-  text-align: center;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(8, 80px);
@@ -221,6 +216,23 @@ header .right img {
 }
 
 /* Chat Styles */
+.game-code {
+  display: none;
+  text-align: center;
+}
+
+.game-code img {
+  display: inline-block;
+  margin-left: 1rem;
+  cursor: pointer;
+  width: 20px;
+  transition: all 0.5s;
+}
+
+.game-code img:hover {
+  transform: scale(1.2);
+}
+
 .chat {
   background: #fff;
   padding: 2rem;
