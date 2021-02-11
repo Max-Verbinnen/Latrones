@@ -33,7 +33,8 @@ const errorMessage = document.querySelector(".err-msg");
 socket.on("init", handleInit);
 socket.on("move", handleMove);
 socket.on("gameCode", handleGameCode);
-socket.on("joined", handleJoined)
+socket.on("joined", handleJoined);
+socket.on("left", handleLeft);
 socket.on("unknownGame", handleUnknownGame);
 socket.on("tooManyPlayers", handleTooManyPlayers);
 socket.on("gameOver", handleGameOver);
@@ -70,6 +71,10 @@ function handleJoined() {
   } else {
     opponentState.innerHTML = "Game on!";
   }
+}
+
+function handleLeft() {
+  opponentState.innerHTML = "Your opponent has left the game.";
 }
 
 function handleUnknownGame() {

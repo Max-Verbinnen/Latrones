@@ -19,6 +19,7 @@ io.on("connection", client => {
   client.on("newGame", handleNewGame);
   client.on("joinGame", handleJoinGame);
   client.on("chat", handleChat);
+  client.on("disconnect", handleDisconnect);
 
   function handleMove({html, capture}) {
     let roomName = clientRooms[client.id];
@@ -68,5 +69,10 @@ io.on("connection", client => {
   function handleChat({msg, nr}) {
     let roomName = clientRooms[client.id];
     io.sockets.to(roomName).emit("chat", {msg, nr});
+  }
+
+  function handleDisconnect() {
+    let roomName = clientRooms[client.id];
+    io.sockets.to(roomName).emit("left");
   }
 });
