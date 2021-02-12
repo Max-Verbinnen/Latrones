@@ -17,7 +17,8 @@ let fullGame;
 let isSomeoneSearching;
 
 // Socket IO
-const socket = io.connect("http://localhost:4000" || "https://stark-brushlands-40471.herokuapp.com/");
+const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
+// const socket = io.connect("http://localhost:4000");
 
 // Initial Screen
 const initialScreen = document.querySelector(".initialScreen");
