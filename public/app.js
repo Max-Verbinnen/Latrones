@@ -14,15 +14,16 @@ let playerNumber;
 let gameActive = false;
 let yourTurn;
 let fullGame;
+let isSomeoneSearching;
 
 // Socket IO
-const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
-// const socket = io.connect("http://localhost:4000");
+const socket = io.connect("http://localhost:4000" || "https://stark-brushlands-40471.herokuapp.com/");
 
 // Initial Screen
 const initialScreen = document.querySelector(".initialScreen");
 const newGameBtn = document.querySelector("#newGameButton");
 const joinGameBtn = document.querySelector("#joinGameButton");
+const searchGameBtn = document.querySelector("#searchGameButton");
 const gameCodeInput = document.querySelector("#gameCodeInput");
 const gameCode = document.querySelector(".game-code");
 const gameCodeDisplay = document.querySelector("#gameCodeDisplay");

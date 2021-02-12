@@ -102,6 +102,14 @@ header .right img {
   border: 2px solid #769656;
   font-size: 1.25rem;
   border-radius: 0.5rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.join-game-btn {
+  padding: calc(0.57rem + 2px) 1rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .input-group {
@@ -117,7 +125,7 @@ header .right img {
 .err-msg {
   display: block;
   color: red;
-  margin-top: 0.4rem;
+  margin: 0.4rem 0;
 }
 
 @media screen and (max-width: 1000px) {
