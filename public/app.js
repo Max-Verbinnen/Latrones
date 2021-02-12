@@ -45,6 +45,11 @@ function handleInit(obj) {
   if (playerNumber === 1) {
     yourTurn = true;
   }
+
+  // Turn board if black
+  if (playerNumber === 2) {
+    grid.style.transform = "rotate(180deg)";
+  }
 }
 
 function handleMove({html, capture}) {
@@ -177,11 +182,6 @@ function game() {
   const fill = document.querySelectorAll('.fill');
   let empties = document.querySelectorAll('.area');
   let draggedElement = null;
-
-  // Turn board if black
-  if (playerNumber === 2) {
-    grid.style.transform = "rotate(180deg)";
-  }
 
   fill.forEach(piece => {
     piece.addEventListener('dragstart', dragStart);
