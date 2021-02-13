@@ -14,11 +14,10 @@ let playerNumber;
 let gameActive = false;
 let yourTurn;
 let fullGame;
-let isSomeoneSearching;
 
 // Socket IO
-const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
-// const socket = io.connect("http://localhost:4000");
+// const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
+const socket = io.connect("http://localhost:4000");
 
 // Initial Screen
 const initialScreen = document.querySelector(".initialScreen");
@@ -199,7 +198,7 @@ function game() {
   }
 
   // Drag Functions
-  function dragStart() {
+  function dragStart(e) {
     setTimeout(() => (this.className = "invisible"), 0);
     draggedElement = this;
     
@@ -261,10 +260,9 @@ function game() {
     }
 
     // Socket IO Integration
-    if (options.includes(this) && yourTurn && isYourPiece(draggedElement) && gameActive && fullGame) {
-      // After moving it's your opponent's turn
-      yourTurn = false;
+    if (options.includes(this) && isYourPiece(draggedElement) && gameActive && fullGame && yourTurn) {
       setTimeout(() => socket.emit("move", {html: grid.innerHTML, capture: took}), 0);
+      yourTurn = false;
     }
   }
 
