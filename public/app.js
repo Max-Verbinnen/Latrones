@@ -48,7 +48,7 @@ function handleInit(obj) {
   }
 
   // Turn board if black
-  if (playerNumber === 2) {
+  if (playerNumber === 2 && navigator.userAgent.indexOf("Firefox") <= -1) {
     grid.style.transform = "rotate(180deg)";
   }
 }
@@ -294,7 +294,7 @@ function game() {
       }
 
       // Check 3
-      if (playerNumber === 1) {
+      if (playerNumber === 1 || navigator.userAgent.indexOf("Firefox") > -1) {
         if (x === initX && y < initY && empty.children.length > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = Math.floor(idx / 8);
@@ -328,7 +328,7 @@ function game() {
           }
         }
       }
-      if (playerNumber === 2) {
+      if (playerNumber === 2 && navigator.userAgent.indexOf("Firefox") <= -1) {
         if (x === initX && y < initY && empty.children.length > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = Math.floor((64 - idx) / 8);
