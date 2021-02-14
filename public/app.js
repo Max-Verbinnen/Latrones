@@ -169,7 +169,7 @@ socket.on("chat", ({msg, nr}) => {
   if (nr === playerNumber) {
     output.innerHTML += `<p class="chat-msg"><strong>You</strong>: ${msg}</p>`;
   } else {
-    output.innerHTML += `<p class="chat-msg"><strong>Opponent</strong> ${msg}</p>`;
+    output.innerHTML += `<p class="chat-msg"><strong>Opponent</strong>: ${msg}</p>`;
   }
 
   // Automatic scroll for new msg
