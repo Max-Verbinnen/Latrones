@@ -27,9 +27,9 @@ io.on("connection", client => {
     client.to(roomName).emit("move", {html: state[roomName], capture: capture});
   }
 
-  function handleWinner(winner) {
+  function handleWinner({winner, cause}) {
     let roomName = clientRooms[client.id];
-    io.sockets.in(roomName).emit("gameOver", winner);
+    io.sockets.in(roomName).emit("gameOver", {winner, cause});
   }
   
   function handleNewGame() {

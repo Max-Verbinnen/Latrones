@@ -14,6 +14,8 @@ let playerNumber;
 let gameActive = false;
 let yourTurn;
 let fullGame;
+let yourCountdown;
+let opponentCountdown;
 
 // Socket IO
 const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
@@ -55,8 +57,14 @@ function handleInit(obj) {
 
 function handleMove({html, capture}) {
   grid.innerHTML = html;
+
   // When you get move back from server it is your turn
   yourTurn = true;
+
+  // Control timers
+  startTimer("you");
+  clearInterval(opponentCountdown);
+
   // Play audio
   if (capture) {
     captureSound.play();
@@ -80,8 +88,10 @@ function handleJoined() {
   fullGame = true;
   if (playerNumber === 1) {
     opponentState.innerHTML = "Your opponent has joined.";
+    startTimer("you");
   } else {
     opponentState.innerHTML = "Game on!";
+    startTimer("opponent");
   }
 }
 
@@ -104,17 +114,34 @@ const gameOverContainer = document.querySelector(".game-over-container");
 const gameOver = document.querySelector(".game-over");
 const exitBtn = document.querySelector(".exit");
 
-function handleGameOver(winner) {
+function handleGameOver({winner, cause}) {
   gameActive = false;
+
   if (winner === playerNumber) {
+    opponentTime.innerText = "0:00";
     gameOver.querySelector("h1").innerText = "You Won :)";
-    gameOver.querySelector("p").innerText = "You surrounded the opponent's dux...";
+
+    if (cause === "RanOutOfTime") {
+      gameOver.querySelector("p").innerText = "Your opponent's time ran out...";
+    } else {
+      gameOver.querySelector("p").innerText = "You surrounded the opponent's dux...";
+    }
+
     gameOverContainer.classList.add("active");
   } else {
     gameOver.querySelector("h1").innerText = "You Lost :(";
-    gameOver.querySelector("p").innerText = "Your dux is surrounded...";
+
+    if (cause === "RanOutOfTime") {
+      gameOver.querySelector("p").innerText = "Your time ran out...";
+    } else {
+      gameOver.querySelector("p").innerText = "Your dux is surrounded...";
+    }
+
     gameOverContainer.classList.add("active");
   }
+
+  clearInterval(yourCountdown);
+  clearInterval(opponentCountdown);
 }
 
 exitBtn.addEventListener("click", () => {
@@ -175,6 +202,57 @@ socket.on("chat", ({msg, nr}) => {
   // Automatic scroll for new msg
   output.scrollTop = output.scrollHeight;
 });
+
+
+// Two timers
+const opponentTime = document.querySelector(".opponent-time");
+const yourTime = document.querySelector(".your-time");
+let yourMinutes = 10;
+let yourSeconds = 0;
+let opponentMinutes = 10;
+let opponentSeconds = 0;
+
+function startTimer(who) {
+  if (who === "you") {
+    yourCountdown = interval(yourTime, who);
+  } else {
+    opponentCountdown = interval(opponentTime, who);
+  }
+}
+
+const interval = (timer, who) => {
+  let countdown;
+
+  if (who === "you") {
+    countdown = setInterval(() => {
+      yourSeconds--;
+      if (yourSeconds < 0) {
+        yourMinutes--;
+        yourSeconds = 59;
+      }
+      if (yourMinutes < 0) {
+        yourMinutes = 0;
+        yourSeconds = 0;
+        let winnerNR = (playerNumber === 1) ? 2 : 1;
+        socket.emit("winner", {winner: winnerNR, cause: "RanOutOfTime"});
+      }
+      let secs = yourSeconds.toString().padStart(2, "0");
+      timer.innerText = `${yourMinutes}:${secs}`;
+    }, 1000);
+  } else {
+    countdown = setInterval(() => {
+      opponentSeconds--;
+      if (opponentSeconds < 0) {
+        opponentMinutes--;
+        opponentSeconds = 59;
+      }
+      let secs = opponentSeconds.toString().padStart(2, "0");
+      timer.innerText = `${opponentMinutes}:${secs}`;
+    }, 1000);
+  }
+
+  return countdown;
+}
 
 
 // Client Side JS
@@ -245,9 +323,9 @@ function game() {
     // Is white or black dux surrounded?
     setTimeout(() => {
       if (isBlackDuxSurrounded() && gameActive) {
-        socket.emit("winner", 1);
+        socket.emit("winner", {winner: 1, cause: "DuxWasSurrounded"});
       } else if (isWhiteDuxSurrounded() && gameActive) {
-        socket.emit("winner", 2);
+        socket.emit("winner", {winner: 2, cause: "DuxWasSurrounded"});
       }
     }, 0);
 
@@ -263,6 +341,8 @@ function game() {
     if (options.includes(this) && isYourPiece(draggedElement) && gameActive && fullGame && yourTurn) {
       setTimeout(() => socket.emit("move", {html: grid.innerHTML, capture: took}), 0);
       yourTurn = false;
+      clearInterval(yourCountdown);
+      startTimer("opponent");
     }
   }
 

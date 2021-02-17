@@ -75,6 +75,12 @@ header .right img {
   width: 100%;
   height: 100%;
   border-radius: 0.5rem;
+  user-drag: none; 
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .join-section {
@@ -159,14 +165,33 @@ header .right img {
   min-height: 100vh;
 }
 
+.game-board {
+  margin-right: 6rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.time {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 2.5rem;
+  font-size: 1.15rem;
+  color: white;
+  font-weight: bolder;
+  background-color: #769656;
+  border-radius: 0.5rem;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(8, 80px);
-  border-radius: 0.2rem;
   background: url("./assets/bg.jpg") no-repeat center;
   border-radius: 1rem;
   padding: 1rem;
-  margin-right: 7rem;
+  margin: 0.5rem 0;
 }
 
 .area {
