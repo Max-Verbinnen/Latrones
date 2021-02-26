@@ -71,7 +71,7 @@ function handleMove({html, capture}) {
   } else {
     playSound.play();
   }
-  setTimeout(() => game(), 100);
+  game();
 }
 
 function handleGameCode(code) {
@@ -93,6 +93,7 @@ function handleJoined() {
     opponentState.innerHTML = "Game on!";
     startTimer("opponent");
   }
+  game();
 }
 
 function handleLeft() {
@@ -165,7 +166,6 @@ const init = () => {
   gameSection.style.display = "flex";
   gameCode.style.display = "block";
   gameActive = true;
-  setTimeout(() => game(), 500);
 }
 
 const reset = () => {
