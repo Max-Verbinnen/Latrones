@@ -71,7 +71,7 @@ function handleMove({html, capture}) {
   } else {
     playSound.play();
   }
-  game();
+  setTimeout(() => game(), 200);
 }
 
 function handleGameCode(code) {
@@ -119,10 +119,10 @@ function handleGameOver({winner, cause}) {
   gameActive = false;
 
   if (winner === playerNumber) {
-    opponentTime.innerText = "0:00";
     gameOver.querySelector("h1").innerText = "You Won :)";
 
     if (cause === "RanOutOfTime") {
+      opponentTime.innerText = "0:00";
       gameOver.querySelector("p").innerText = "Your opponent's time ran out...";
     } else {
       gameOver.querySelector("p").innerText = "You surrounded the opponent's dux...";
@@ -213,10 +213,12 @@ let opponentMinutes = 10;
 let opponentSeconds = 0;
 
 function startTimer(who) {
-  if (who === "you") {
-    yourCountdown = interval(yourTime, who);
-  } else {
-    opponentCountdown = interval(opponentTime, who);
+  if (gameActive) {
+    if (who === "you") {
+      yourCountdown = interval(yourTime, who);
+    } else {
+      opponentCountdown = interval(opponentTime, who);
+    }
   }
 }
 
@@ -255,7 +257,7 @@ const interval = (timer, who) => {
 }
 
 
-// Client Side JS
+// Game logic
 function game() {
   // Board itself
   const fill = document.querySelectorAll('.fill');
@@ -273,6 +275,9 @@ function game() {
     empty.addEventListener('dragenter', dragEnter);
     empty.addEventListener('dragleave', dragLeave);
     empty.addEventListener('drop', dragDrop);
+    empty.addEventListener('click', () => {
+      console.log(Array.prototype.indexOf.call(empties, empty));
+    });
   }
 
   // Drag Functions
@@ -331,7 +336,7 @@ function game() {
 
     // Did a pawn take another pawn?
     let took = false;
-    if (didTake(draggedElement)) {
+    if (didTake(draggedElement) && options.includes(this)) {
       took = true;
       captureSound.play();
       didTake(draggedElement).innerHTML = "";
@@ -384,7 +389,7 @@ function game() {
         }
         if (x === initX && y > initY && empty.children.length > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
-          const amountSquaresBehind = Math.floor(idx / 8);
+          const amountSquaresBehind = Math.floor((64 - idx) / 8);
           for (let i = 0; i < amountSquaresBehind; i++) {
             notOptions.push(empties[idx + (8*(i+1))]);
           }
@@ -418,7 +423,7 @@ function game() {
         }
         if (x === initX && y > initY && empty.children.length > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
-          const amountSquaresBehind = Math.floor((64 - idx) / 8);
+          const amountSquaresBehind = Math.floor(idx / 8);
           for (let i = 0; i < amountSquaresBehind; i++) {
             notOptions.push(empties[idx - (8*(i+1))]);
           }
