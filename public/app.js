@@ -477,7 +477,7 @@ function game() {
   }
 
   const isDuxSurrounded = (dux) => {
-    const {x, y} = dux.getBoundingClientRect();
+    const {x, y, width} = dux.getBoundingClientRect();
 
     /*
       Three situations for dux:
@@ -488,54 +488,54 @@ function game() {
 
     // Top left corner
     if (isTopSide(dux) && isLeftSide(dux)) {
-      if (isRightOfMe(x, y) && isBeneathMe(x, y)) {
+      if (isRightOfMe(x, y, width) && isBeneathMe(x, y, width)) {
         return true;
       }
     }
     // Top right corner
     if (isTopSide(dux) && isRightSide(dux)) {
-      if (isBeneathMe(x, y) && isLeftOfMe(x, y)) {
+      if (isBeneathMe(x, y, width) && isLeftOfMe(x, y, width)) {
         return true;
       }
     }
     // Bottom left corner
     if (isBottomSide(dux) && isLeftSide(dux)) {
-      if (isAboveMe(x, y) && isRightOfMe(x, y)) {
+      if (isAboveMe(x, y, width) && isRightOfMe(x, y, width)) {
         return true;
       }
     }
     // Bottom right corner
     if (isBottomSide(dux) && isRightSide(dux)) {
-      if (isAboveMe(x, y) && isLeftOfMe(x, y)) {
+      if (isAboveMe(x, y, width) && isLeftOfMe(x, y, width)) {
         return true;
       }
     }
     // Top side
     if (isTopSide(dux)) {
-      if (isLeftOfMe(x, y) && isRightOfMe(x, y) && isBeneathMe(x, y)) {
+      if (isLeftOfMe(x, y, width) && isRightOfMe(x, y, width) && isBeneathMe(x, y, width)) {
         return true;
       }
     }
     // Bottom side
     if (isBottomSide(dux)) {
-      if (isLeftOfMe(x, y) && isRightOfMe(x, y) && isAboveMe(x, y)) {
+      if (isLeftOfMe(x, y, width) && isRightOfMe(x, y, width) && isAboveMe(x, y, width)) {
         return true;
       }
     }
     // Left side
     if (isLeftSide(dux)) {
-      if (isAboveMe(x, y) && isBeneathMe(x, y) && isRightOfMe(x, y)) {
+      if (isAboveMe(x, y, width) && isBeneathMe(x, y, width) && isRightOfMe(x, y, width)) {
         return true;
       }
     }
     // Right side
     if (isRightSide(dux)) {
-      if (isAboveMe(x, y) && isBeneathMe(x, y) && isLeftOfMe(x, y)) {
+      if (isAboveMe(x, y, width) && isBeneathMe(x, y, width) && isLeftOfMe(x, y, width)) {
         return true;
       }
     }
     // Middle of board
-    if (isAboveMe(x, y) && isBeneathMe(x, y) && isLeftOfMe(x, y) && isRightOfMe(x, y)) {
+    if (isAboveMe(x, y, width) && isBeneathMe(x, y, width) && isLeftOfMe(x, y, width) && isRightOfMe(x, y, width)) {
       return true;
     }
 
@@ -574,29 +574,29 @@ function game() {
     return false;
   }
 
-  const isAboveMe = (x, y) => {
-    if (document.elementFromPoint(x, y - 80) !== document.body && document.elementFromPoint(x, y - 80).children.length !== 0) {
+  const isAboveMe = (x, y, width) => {
+    if (document.elementFromPoint(x, y - width) !== document.body && document.elementFromPoint(x, y - width).children.length !== 0) {
       return true;
     }
     return false;
   }
 
-  const isBeneathMe = (x, y) => {
-    if (document.elementFromPoint(x, y + 80) !== document.body && document.elementFromPoint(x, y + 80).children.length !== 0) {
+  const isBeneathMe = (x, y, width) => {
+    if (document.elementFromPoint(x, y + width) !== document.body && document.elementFromPoint(x, y + width).children.length !== 0) {
       return true;
     }
     return false;
   }
 
-  const isLeftOfMe = (x, y) => {
-    if (document.elementFromPoint(x - 80, y) !== document.body && document.elementFromPoint(x - 80, y).children.length !== 0) {
+  const isLeftOfMe = (x, y, width) => {
+    if (document.elementFromPoint(x - width, y) !== document.body && document.elementFromPoint(x - width, y).children.length !== 0) {
       return true;
     }
     return false;
   }
 
-  const isRightOfMe = (x, y) => {
-    if (document.elementFromPoint(x + 80, y) !== document.body && document.elementFromPoint(x + 80, y).children.length !== 0) {
+  const isRightOfMe = (x, y, width) => {
+    if (document.elementFromPoint(x + width, y) !== document.body && document.elementFromPoint(x + width, y).children.length !== 0) {
       return true;
     }
     return false;
@@ -605,16 +605,16 @@ function game() {
   const didTake = (elem) => {
     const moved = elem.parentElement;
     const color = elem.id[0];
-    const {x, y} = moved.getBoundingClientRect();
+    const {x, y, width} = moved.getBoundingClientRect();
 
-    let left = document.elementFromPoint(x - 80, y);
-    let right = document.elementFromPoint(x + 80, y);
-    let top = document.elementFromPoint(x, y - 80);
-    let bottom = document.elementFromPoint(x, y + 80);
-    let doubleLeft = document.elementFromPoint(x - 160, y);
-    let doubleRight = document.elementFromPoint(x + 160, y);
-    let doubleTop = document.elementFromPoint(x, y - 160);
-    let doubleBottom = document.elementFromPoint(x, y + 160);
+    let left = document.elementFromPoint(x - width, y);
+    let right = document.elementFromPoint(x + width, y);
+    let top = document.elementFromPoint(x, y - width);
+    let bottom = document.elementFromPoint(x, y + width);
+    let doubleLeft = document.elementFromPoint(x - (width * 2), y);
+    let doubleRight = document.elementFromPoint(x + (width * 2), y);
+    let doubleTop = document.elementFromPoint(x, y - (width * 2));
+    let doubleBottom = document.elementFromPoint(x, y + (width * 2));
 
     if (isEnemy(left, color) && isEnemy(doubleLeft, color) === false && !isDux(left)) {
       return left;

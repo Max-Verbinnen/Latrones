@@ -203,7 +203,7 @@ header .right img {
   justify-content: center;
 }
 
-.fill {
+.fill, .piece-drag {
   width: 70px;
   height: 70px;
   cursor: grab;
