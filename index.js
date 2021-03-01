@@ -25,6 +25,7 @@ io.on("connection", client => {
     let roomName = clientRooms[client.id];
     state[roomName] = html;
     client.to(roomName).emit("move", {html: state[roomName], capture: capture});
+    io.emit("adminDashboardMove", {state: state[roomName], roomName: roomName});
   }
 
   function handleWinner({winner, cause}) {
@@ -64,6 +65,7 @@ io.on("connection", client => {
     client.number = 2;
     client.emit("init", {html: state[roomName], number: 2});
     io.sockets.to(roomName).emit("joined");
+    io.emit("adminDashboardInit", {state: state[roomName], roomName: roomName});
   }
 
   function handleChat({msg, nr}) {
@@ -75,4 +77,9 @@ io.on("connection", client => {
     let roomName = clientRooms[client.id];
     io.sockets.to(roomName).emit("left");
   }
+});
+
+// Admin route
+app.get("/admin", (req, res) => {
+  res.sendFile("/public/admin.html", {root: __dirname });
 });
