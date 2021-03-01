@@ -344,7 +344,7 @@ function game() {
 
     // Socket IO Integration
     if (options.includes(this) && isYourPiece(draggedElement) && gameActive && fullGame && yourTurn) {
-      setTimeout(() => socket.emit("move", {html: grid.innerHTML, capture: took}), 0);
+      setTimeout(() => socket.emit("move", {html: grid.innerHTML, capture: took}), 100);
       yourTurn = false;
       clearInterval(yourCountdown);
       startTimer("opponent");
