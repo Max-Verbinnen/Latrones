@@ -55,6 +55,11 @@
       const game = document.getElementById(roomName);
       game.innerHTML = state;
     });
+
+    socket.on("adminDashboardLeave", roomName => {
+      const game = document.getElementById(roomName);
+      if (game) container.removeChild(game);
+    });
   </script>
 </body>
 </html>

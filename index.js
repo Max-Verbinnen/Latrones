@@ -82,6 +82,7 @@ io.on("connection", client => {
   function handleDisconnect() {
     let roomName = clientRooms[client.id];
     io.sockets.to(roomName).emit("left");
+    io.emit("adminDashboardLeave", roomName);
   }
 });
 
