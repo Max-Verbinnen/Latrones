@@ -119,7 +119,7 @@ function handleGameOver({winner, cause}) {
   gameActive = false;
 
   if (winner === playerNumber) {
-    gameOver.querySelector("h1").innerText = "You Won :)";
+    gameOver.querySelector("h1").innerText = "IMPERATOR";
 
     if (cause === "RanOutOfTime") {
       opponentTime.innerText = "0:00";
@@ -130,7 +130,7 @@ function handleGameOver({winner, cause}) {
 
     gameOverContainer.classList.add("active");
   } else {
-    gameOver.querySelector("h1").innerText = "You Lost :(";
+    gameOver.querySelector("h1").innerText = "You lost :(";
 
     if (cause === "RanOutOfTime") {
       gameOver.querySelector("p").innerText = "Your time ran out...";
@@ -181,8 +181,11 @@ const reset = () => {
 
 // Chat Application
 const output = document.querySelector(".output");
+const moves = document.querySelector(".moves");
 const form = document.querySelector(".chat-form");
 const message = document.querySelector(".chat-form input");
+const chatLink = document.querySelector(".chat-link");
+const notationLink = document.querySelector(".notation-link");
 
 form.addEventListener("submit", e => {
   e.preventDefault();
@@ -201,6 +204,39 @@ socket.on("chat", ({msg, nr}) => {
 
   // Automatic scroll for new msg
   output.scrollTop = output.scrollHeight;
+});
+
+chatLink.addEventListener("click", handleNavSwitch);
+notationLink.addEventListener("click", handleNavSwitch);
+
+function handleNavSwitch() {
+  if (!this.classList.contains("active")) {
+    this.classList.add("active");
+  }
+
+  if (this === chatLink) {
+    notationLink.classList.remove("active");
+    output.style.display = "block";
+    moves.style.display = "none";
+  } else {
+    chatLink.classList.remove("active");
+    output.style.display = "none";
+    moves.style.display = "block";
+  }
+}
+
+let count = 0;
+
+socket.on("notation", move => {
+  count++;
+
+  // If this is a move in the same "set"
+  if (count % 2 === 0) {
+    moves.children[moves.children.length - 1].innerHTML += `<span id="notation-part">${move}</span>`;
+  } else {
+    let num = moves.children.length + 1;
+    moves.innerHTML += `<p id="oneMove"><strong>${num}:</strong> <span>${move}</span></p>`;
+  }
 });
 
 
@@ -263,6 +299,7 @@ function game() {
   const fill = document.querySelectorAll('.fill');
   let empties = document.querySelectorAll('.area');
   let draggedElement = null;
+  let initialElement = null;
 
   fill.forEach(piece => {
     piece.addEventListener('dragstart', dragStart);
@@ -283,6 +320,7 @@ function game() {
   // Drag Functions
   function dragStart(e) {
     setTimeout(() => (this.className = "invisible"), 0);
+    initialElement = this.parentElement;
     draggedElement = this;
     
     // Display dots on free areas
@@ -336,10 +374,29 @@ function game() {
 
     // Did a pawn take another pawn?
     let took = false;
+    let elem;
     if (didTake(draggedElement) && options.includes(this)) {
       took = true;
+      elem = didTake(draggedElement);
       captureSound.play();
       didTake(draggedElement).innerHTML = "";
+    }
+
+    // Notation
+    let from = "";
+    let to = "";
+    if (isDux(this)) {
+      from = "D";
+    }
+    from += initialElement.classList[1];
+    to += this.classList[1];
+    if (took) {
+      to += "x" + elem.classList[1];
+    }
+    if ((isBlackDuxSurrounded() || isWhiteDuxSurrounded() && gameActive)) {
+      to += "#";
+    } else if (didBlockEnemyImperator(this)) {
+      to += "*";
     }
 
     // Socket IO Integration
@@ -348,6 +405,7 @@ function game() {
       yourTurn = false;
       clearInterval(yourCountdown);
       startTimer("opponent");
+      socket.emit("notation", {from, to});
     }
   }
 
@@ -651,6 +709,20 @@ function game() {
       }
       return false;
     }
+    return false;
+  }
+
+  const didBlockEnemyImperator = (elem) => {
+    const {x, y, width} = elem.getBoundingClientRect();
+    let left = document.elementFromPoint(x - width, y);
+    let right = document.elementFromPoint(x + width, y);
+    let top = document.elementFromPoint(x, y - width);
+    let bottom = document.elementFromPoint(x, y + width);
+
+    if ((isAboveMe(x, y, width) && isDux(top) && isEnemy(top)) || (isBeneathMe(x, y, width) && isDux(bottom) && isEnemy(bottom)) || (isLeftOfMe(x, y, width) && isDux(left) && isEnemy(left)) || (isRightOfMe(x, y, width) && isDux(right) && isEnemy(right))) {
+      return true;
+    }
+
     return false;
   }
 }

@@ -15,6 +15,7 @@ app.use(express.static("public"));
 const io = socket(server);
 io.on("connection", client => {
   client.on("move", handleMove);
+  client.on("notation", handleNotation);
   client.on("winner", handleWinner);
   client.on("newGame", handleNewGame);
   client.on("joinGame", handleJoinGame);
@@ -26,6 +27,11 @@ io.on("connection", client => {
     state[roomName] = html;
     client.to(roomName).emit("move", {html: state[roomName], capture: capture});
     io.emit("adminDashboardMove", {state: state[roomName], roomName: roomName});
+  }
+
+  function handleNotation({from, to}) {
+    let roomName = clientRooms[client.id];
+    io.sockets.to(roomName).emit("notation", `${from}-${to}`);
   }
 
   function handleWinner({winner, cause}) {

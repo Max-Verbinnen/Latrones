@@ -202,6 +202,7 @@ header .right .square.top-right img {
 }
 
 .game-board {
+  position: relative;
   margin-right: 6rem;
   display: flex;
   align-items: center;
@@ -237,6 +238,13 @@ header .right .square.top-right img {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.area #notation {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  opacity: 0.8;
 }
 
 .fill, .piece-drag {
@@ -312,7 +320,6 @@ header .right .square.top-right img {
 .opponent-state {
   text-align: center;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgb(226, 226, 226);
 }
 
 /* Loading animation (3 dots) */
@@ -330,7 +337,40 @@ header .right .square.top-right img {
   100% { content: ''; }
 }
 
-.output {
+.chat-nav {
+  display: flex;
+  padding: 0.5rem;
+  background: rgb(226, 226, 226);
+  border-radius: 0 0 20px 20px;
+}
+
+.chat-link, .notation-link {
+  position: relative;
+  width: 50%;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+.chat-link.active::before, .notation-link.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 50%;
+  height: 3px;
+  transform: translateX(50%);
+  background: #769656;
+}
+
+#notation-part {
+  display: inline-block;
+  left: 1210px;
+  position: absolute;
+}
+
+.output, .moves {
+  position: relative;
   height: 200px;
   max-width: 100%;
   overflow-x: hidden;
@@ -339,6 +379,10 @@ header .right .square.top-right img {
   scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
   scrollbar-width: thin;
   margin: 1rem 0;
+}
+
+.moves {
+  display: none;
 }
 
 .chat-msg {
