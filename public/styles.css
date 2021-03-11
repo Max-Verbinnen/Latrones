@@ -242,9 +242,29 @@ header .right .square.top-right img {
 
 .area #notation {
   position: absolute;
-  top: -5px;
-  left: -5px;
+  top: 0;
+  left: 0;
   opacity: 0.8;
+}
+
+.area #notation.letters {
+  top: initial;
+  left: initial;
+  bottom: 0;
+  right: 0;
+}
+
+.area #notation.black {
+  transform: rotate(180deg);
+  top: 0;
+  left: 0;
+  bottom: initial;
+  right: initial;
+}
+
+.area #notation.numbers.black {
+  right: 0;
+  bottom: 0;
 }
 
 .fill, .piece-drag {

@@ -53,11 +53,15 @@ function handleInit(obj) {
   if (playerNumber === 2 && navigator.userAgent.indexOf("Firefox") <= -1) {
     grid.style.transform = "rotate(180deg)";
   }
+
+  // Set notation on board (letters & numbers)
+  setNotation();
 }
 
 function handleMove({html, capture}) {
   grid.innerHTML = html;
-
+  resetNotation();
+  
   // When you get move back from server it is your turn
   yourTurn = true;
 
@@ -725,4 +729,38 @@ function game() {
 
     return false;
   }
+}
+
+
+// Util functions
+function setNotation() {
+  const areas = document.querySelectorAll(".area");
+  areas.forEach(area => {
+    let index = Array.prototype.indexOf.call(areas, area);
+    
+    if (playerNumber === 1) {
+      if (index >= 56) {
+        const set = {56: 0, 57: 1, 58: 2, 59: 3, 60: 4, 61: 5, 62: 5, 63: 6, 64: 7};
+        area.innerHTML += `<div id="notation" class="letters">${String.fromCharCode(97 + set[index])}</div>`;
+      }
+      if (index % 8 === 0) {
+        const set = {0: 8, 8: 7, 16: 6, 24: 5, 32: 4, 40: 3, 48: 2, 56: 1};
+        area.innerHTML += `<div id="notation">${set[index]}</div>`;
+      }
+    } else if (playerNumber === 2) {
+      if (index <= 7) {
+        area.innerHTML += `<div id="notation" class="letters black">${String.fromCharCode(97 + index)}</div>`;
+      }
+      if (index % 8 === 7) {
+        const set = {63: 1, 55: 2, 47: 3, 39: 4, 31: 5, 23: 6, 15: 7, 7: 8};
+        area.innerHTML += `<div id="notation" class="numbers black">${set[index]}</div>`;
+      }
+    }
+  });
+}
+
+function resetNotation() {
+  const notations = document.querySelectorAll("#notation");
+  notations.forEach(notation => notation.remove());
+  setNotation();
 }
