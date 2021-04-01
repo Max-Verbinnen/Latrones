@@ -347,7 +347,7 @@ function game() {
 
   function dragEnter(e) {
     e.preventDefault();
-    if (e.target.children.length === 0) {
+    if (actualLength(e.target) === 0) {
       this.classList.add("hovered");
     }
   }
@@ -436,27 +436,27 @@ function game() {
       const {x, y} = empty.getBoundingClientRect();
 
       // Check 1 & 2
-      if ((x === initX || y === initY) && (empty.children.length === 0)) {
+      if ((x === initX || y === initY) && (actualLength(empty) === 0)) {
         possibleOptions.push(empty);
       }
 
       // Check 3
       if (playerNumber === 1 || navigator.userAgent.indexOf("Firefox") > -1) {
-        if (x === initX && y < initY && empty.children.length > 0) {
+        if (x === initX && y < initY && actualLength(empty) > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = Math.floor(idx / 8);
           for (let i = 0; i < amountSquaresBehind; i++) {
             notOptions.push(empties[idx - (8*(i+1))]);
           }
         }
-        if (x === initX && y > initY && empty.children.length > 0) {
+        if (x === initX && y > initY && actualLength(empty) > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = Math.floor((64 - idx) / 8);
           for (let i = 0; i < amountSquaresBehind; i++) {
             notOptions.push(empties[idx + (8*(i+1))]);
           }
         }
-        if (y === initY && x < initX && empty.children.length > 0) {
+        if (y === initY && x < initX && actualLength(empty) > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = idx % 8;
           let ind = idx;
@@ -465,7 +465,7 @@ function game() {
             notOptions.push(empties[ind]);
           }
         }
-        if (y === initY && x > initX && empty.children.length > 0) {
+        if (y === initY && x > initX && actualLength(empty) > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = 7 - (idx % 8);
           let ind = idx;
@@ -476,21 +476,21 @@ function game() {
         }
       }
       if (playerNumber === 2 && navigator.userAgent.indexOf("Firefox") <= -1) {
-        if (x === initX && y < initY && empty.children.length > 0) {
+        if (x === initX && y < initY && actualLength(empty) > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = Math.floor((64 - idx) / 8);
           for (let i = 0; i < amountSquaresBehind; i++) {
             notOptions.push(empties[idx + (8*(i+1))]);
           }
         }
-        if (x === initX && y > initY && empty.children.length > 0) {
+        if (x === initX && y > initY && actualLength(empty) > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = Math.floor(idx / 8);
           for (let i = 0; i < amountSquaresBehind; i++) {
             notOptions.push(empties[idx - (8*(i+1))]);
           }
         }
-        if (y === initY && x < initX && empty.children.length > 0) {
+        if (y === initY && x < initX && actualLength(empty) > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = ((64 - idx) % 8) - 1;
           let ind = idx;
@@ -499,7 +499,7 @@ function game() {
             notOptions.push(empties[ind]);
           }
         }
-        if (y === initY && x > initX && empty.children.length > 0) {
+        if (y === initY && x > initX && actualLength(empty) > 0) {
           const idx = Array.prototype.indexOf.call(empties, empty);
           const amountSquaresBehind = idx % 8;
           let ind = idx;
@@ -637,28 +637,28 @@ function game() {
   }
 
   const isAboveMe = (x, y, width) => {
-    if (document.elementFromPoint(x, y - width) !== document.body && document.elementFromPoint(x, y - width).children.length !== 0) {
+    if (document.elementFromPoint(x, y - width) !== document.body && actualLength(document.elementFromPoint(x, y - width)) !== 0) {
       return true;
     }
     return false;
   }
 
   const isBeneathMe = (x, y, width) => {
-    if (document.elementFromPoint(x, y + width) !== document.body && document.elementFromPoint(x, y + width).children.length !== 0) {
+    if (document.elementFromPoint(x, y + width) !== document.body && actualLength(document.elementFromPoint(x, y + width)) !== 0) {
       return true;
     }
     return false;
   }
 
   const isLeftOfMe = (x, y, width) => {
-    if (document.elementFromPoint(x - width, y) !== document.body && document.elementFromPoint(x - width, y).children.length !== 0) {
+    if (document.elementFromPoint(x - width, y) !== document.body && actualLength(document.elementFromPoint(x - width, y)) !== 0) {
       return true;
     }
     return false;
   }
 
   const isRightOfMe = (x, y, width) => {
-    if (document.elementFromPoint(x + width, y) !== document.body && document.elementFromPoint(x + width, y).children.length !== 0) {
+    if (document.elementFromPoint(x + width, y) !== document.body && actualLength(document.elementFromPoint(x + width, y)) !== 0) {
       return true;
     }
     return false;
@@ -696,7 +696,7 @@ function game() {
 
   const isEnemy = (elem, color) => {
     let c = "";
-    if (elem && elem.children.length !== 0) {
+    if (elem && actualLength(elem) !== 0) {
       
       c = elem.children[0].id[0];
       if (c !== color) return true;
@@ -707,7 +707,7 @@ function game() {
   }
 
   const isDux = (elem) => {
-    if (elem.children.length !== 0) {
+    if (actualLength(elem) !== 0) {
       if (elem.children[0].id[1] === "d") {
         return true;
       }
@@ -729,6 +729,16 @@ function game() {
 
     return false;
   }
+
+  const actualLength = (parent) => {
+    // This ignores the notation children
+    for (elem of parent.children) {
+      if (elem?.id.includes("notation")) {
+        return parent.children.length - 1;
+      }
+    }
+    return parent.children.length;
+  }
 }
 
 
@@ -740,7 +750,7 @@ function setNotation() {
     
     if (playerNumber === 1) {
       if (index >= 56) {
-        const set = {56: 0, 57: 1, 58: 2, 59: 3, 60: 4, 61: 5, 62: 5, 63: 6, 64: 7};
+        const set = {56: 0, 57: 1, 58: 2, 59: 3, 60: 4, 61: 5, 62: 6, 63: 7, 64: 8};
         area.innerHTML += `<div id="notation" class="letters">${String.fromCharCode(97 + set[index])}</div>`;
       }
       if (index % 8 === 0) {

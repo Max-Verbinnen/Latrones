@@ -53,7 +53,8 @@
 
     socket.on("adminDashboardMove", ({state, roomName}) => {
       const game = document.getElementById(roomName);
-      game.innerHTML = state;
+      const newState = state.replace(/>[a-h1-8]</g, "><");
+      game.innerHTML = newState;
     });
 
     socket.on("adminDashboardLeave", roomName => {

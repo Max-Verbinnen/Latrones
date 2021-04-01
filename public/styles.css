@@ -229,6 +229,7 @@ header .right .square.top-right img {
   border-radius: 1rem;
   padding: 1rem;
   margin: 0.5rem 0;
+  z-index: 0;
 }
 
 .area {
@@ -245,6 +246,7 @@ header .right .square.top-right img {
   top: 0;
   left: 0;
   opacity: 0.8;
+  z-index: 10;
 }
 
 .area #notation.letters {
@@ -267,10 +269,11 @@ header .right .square.top-right img {
   bottom: 0;
 }
 
-.fill, .piece-drag {
+.fill {
   width: 70px;
   height: 70px;
   cursor: grab;
+  z-index: 100;
 }
 
 .fill.bp {
