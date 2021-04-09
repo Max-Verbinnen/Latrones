@@ -16,6 +16,7 @@ let yourTurn;
 let fullGame;
 let yourCountdown;
 let opponentCountdown;
+let arrows = [];
 
 // Socket IO
 const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
@@ -68,6 +69,10 @@ function handleMove({html, capture}) {
   // Control timers
   startTimer("you");
   clearInterval(opponentCountdown);
+
+  // Remove arrows
+  arrows?.forEach(arrow => arrow.remove());
+  arrows = [];
 
   // Play audio
   if (capture) {
@@ -236,11 +241,15 @@ socket.on("notation", move => {
 
   // If this is a move in the same "set"
   if (count % 2 === 0) {
-    moves.children[moves.children.length - 1].innerHTML += `<span id="notation-part">${move}</span>`;
+    moves.children[moves.children.length - 1].innerHTML += `<span id="notation-part" class="notation-move">${move}</span>`;
   } else {
     let num = moves.children.length + 1;
-    moves.innerHTML += `<p id="oneMove"><strong>${num}:</strong> <span>${move}</span></p>`;
+    moves.innerHTML += `<p id="oneMove"><strong>${num}:</strong> <span class="notation-move">${move}</span></p>`;
   }
+
+  // Draw arrows when hovering over notation
+  const notationMoves = document.querySelectorAll(".notation-move");
+  drawArrows(notationMoves);
 });
 
 
@@ -317,7 +326,7 @@ function game() {
     empty.addEventListener('dragleave', dragLeave);
     empty.addEventListener('drop', dragDrop);
     empty.addEventListener('click', () => {
-      console.log(Array.prototype.indexOf.call(empties, empty));
+      // console.log(Array.prototype.indexOf.call(empties, empty));
     });
   }
 
@@ -409,6 +418,8 @@ function game() {
       yourTurn = false;
       clearInterval(yourCountdown);
       startTimer("opponent");
+      arrows?.forEach(arrow => arrow.remove());
+      arrows = [];
       socket.emit("notation", {from, to});
     }
   }
@@ -773,4 +784,30 @@ function resetNotation() {
   const notations = document.querySelectorAll("#notation");
   notations.forEach(notation => notation.remove());
   setNotation();
+}
+
+function drawArrows(elem) {
+  elem.forEach(notation => {
+    notation.addEventListener("click", () => {
+      let regex = /[a-h]{1}\d{1}-[a-h]{1}\d{1}/;
+      let match = regex.exec(notation.innerText)[0].split("-");
+      let start = match[0];
+      let end = match[1];
+
+      // If black then notation needs to be mirrored
+      let letters = {"a": "h", "b": "g", "c": "f", "d": "e", "e": "d", "f": "c", "g": "b", "h": "a"};
+      if (playerNumber === 2) {
+        start = letters[match[0][0]] + (8 - match[0][1] + 1);
+        end = letters[match[1][0]] + (8 - match[1][1] + 1);
+      }
+
+      const arrow = arrowLine(`.${start}`, `.${end}`, {
+        curvature: 0,
+        color: "#769656",
+        thickness: 1.5
+      });
+
+      arrows.push(arrow);
+    });
+  });
 }

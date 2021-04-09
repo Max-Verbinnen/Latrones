@@ -206,6 +206,7 @@ header .right .square.top-right img {
   margin-right: 6rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
 }
 
@@ -230,6 +231,19 @@ header .right .square.top-right img {
   padding: 1rem;
   margin: 0.5rem 0;
   z-index: 0;
+}
+
+@media screen and (max-width: 1187px), (max-height: 790px) {
+  .game-section {
+    flex-wrap: wrap;
+  }
+  .game-board {
+    transform: scale(0.75);
+    margin: 0;
+  }
+  .chat {
+    margin-bottom: 3rem;
+  }
 }
 
 .area {
@@ -390,6 +404,14 @@ header .right .square.top-right img {
   display: inline-block;
   left: 120px;
   position: absolute;
+}
+
+.notation-move {
+  cursor: pointer;
+}
+
+#__arrowLineInternal-svg-canvas.rotate {
+  transform: rotate(50deg);
 }
 
 .output, .moves {
