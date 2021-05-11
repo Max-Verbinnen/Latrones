@@ -5,3 +5,4 @@ Here you can find a list of the most important files:
 * Main CSS file = [styles.css](./public/styles.css)
 * Main JavaScript file = [app.js](./public/app.js)
 * Node.js server (& Socket.io) = [index.js](./index.js)
+* Code for the structure of the gameboard = [utils.js](./utils.js)
