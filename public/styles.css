@@ -261,6 +261,7 @@ header .right .square.top-right img {
   left: 0;
   opacity: 0.8;
   z-index: 10;
+  pointer-events: none;
 }
 
 .area #notation.letters {
