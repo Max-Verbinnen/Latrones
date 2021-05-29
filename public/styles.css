@@ -63,9 +63,21 @@ header .left .divide {
   font-weight: bolder;
   background-color: #769656;
   margin-top: 0.25rem;
+  margin-right: 0.5rem;
   padding: 0.57rem 1rem;
   border-radius: 0.5rem;
 }
+
+header .left a {
+  display: inline-flex;
+  color: initial;
+}
+
+header .left a img {
+  width: 20px;
+  height: 20px;
+}
+
 
 header .right {
   display: grid;
