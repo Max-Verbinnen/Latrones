@@ -247,9 +247,12 @@ socket.on("notation", move => {
     moves.innerHTML += `<p id="oneMove"><strong>${num}:</strong> <span class="notation-move">${move}</span></p>`;
   }
 
-  // Draw arrows when hovering over notation
+  // Draw arrows when clicking notations
   const notationMoves = document.querySelectorAll(".notation-move");
   drawArrows(notationMoves);
+
+  // Automatic scroll down
+  moves.scrollTop = moves.scrollHeight;
 });
 
 
