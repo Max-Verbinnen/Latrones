@@ -22,21 +22,21 @@ io.on("connection", client => {
   client.on("chat", handleChat);
   client.on("disconnect", handleDisconnect);
 
-  function handleMove({html, capture}) {
+  function handleMove({ html, capture }) {
     let roomName = clientRooms[client.id];
     state[roomName] = html;
-    client.to(roomName).emit("move", {html: state[roomName], capture: capture});
-    io.emit("adminDashboardMove", {state: state[roomName], roomName: roomName});
+    client.to(roomName).emit("move", { html: state[roomName], capture: capture });
+    io.emit("adminDashboardMove", { state: state[roomName], roomName: roomName });
   }
 
-  function handleNotation({from, to}) {
+  function handleNotation({ from, to }) {
     let roomName = clientRooms[client.id];
     io.sockets.to(roomName).emit("notation", `${from}-${to}`);
   }
 
-  function handleWinner({winner, cause}) {
+  function handleWinner({ winner, cause }) {
     let roomName = clientRooms[client.id];
-    io.sockets.in(roomName).emit("gameOver", {winner, cause});
+    io.sockets.in(roomName).emit("gameOver", { winner, cause });
   }
   
   function handleNewGame() {
@@ -46,7 +46,7 @@ io.on("connection", client => {
     state[roomName] = utils.gameState();
     client.join(roomName);
     client.number = 1;
-    client.emit("init", {html: utils.gameState(), number: 1});
+    client.emit("init", { html: utils.gameState(), number: 1 });
   }
 
   function handleJoinGame(roomName) {
@@ -71,12 +71,12 @@ io.on("connection", client => {
     client.number = 2;
     client.emit("init", {html: state[roomName], number: 2});
     io.sockets.to(roomName).emit("joined");
-    io.emit("adminDashboardInit", {state: state[roomName], roomName: roomName});
+    io.emit("adminDashboardInit", { state: state[roomName], roomName });
   }
 
   function handleChat({msg, nr}) {
     let roomName = clientRooms[client.id];
-    io.sockets.to(roomName).emit("chat", {msg, nr});
+    io.sockets.to(roomName).emit("chat", { msg, nr });
   }
 
   function handleDisconnect() {
@@ -89,5 +89,5 @@ io.on("connection", client => {
 
 // Admin route
 app.get("/admin", (req, res) => {
-  res.sendFile("/public/admin.html", {root: __dirname });
+  res.sendFile("/public/admin.html", { root: __dirname });
 });
