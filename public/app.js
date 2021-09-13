@@ -37,11 +37,7 @@ import {
 } from "./modules/Moves.js";
 
 // Socket IO
-/**
- * @todo automatically detect correct url
- */
-const socket = io.connect("https://stark-brushlands-40471.herokuapp.com/");
-// const socket = io.connect("http://localhost:4000/");
+const socket = io();
 
 // Initial Screen
 const initialScreen = document.querySelector(".initialScreen");
