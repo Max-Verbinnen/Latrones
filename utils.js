@@ -111,7 +111,8 @@ function gameState() {
     <div class="area h1">
       <div class="fill wp" id="wp" draggable="true"></div>
     </div>
-    `);
+    `
+  );
 }
 
 // Export

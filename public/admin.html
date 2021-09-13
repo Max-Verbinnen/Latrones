@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="./css/styles.css">
   <title>Admin | Dashboard</title>
 
   <style>
@@ -43,7 +43,7 @@
     // Socket IO
     const socket = io();
 
-    socket.on("adminDashboardInit", ({state, roomName}) => {
+    socket.on("adminDashboardInit", ({ state, roomName }) => {
       let stateContainer = document.createElement("div");
       stateContainer.classList.add("grid");
       stateContainer.setAttribute("id", roomName);
@@ -51,7 +51,7 @@
       container.append(stateContainer);
     });
 
-    socket.on("adminDashboardMove", ({state, roomName}) => {
+    socket.on("adminDashboardMove", ({ state, roomName }) => {
       const game = document.getElementById(roomName);
       const newState = state.replace(/>[a-h1-8]</g, "><");
       game.innerHTML = newState;
