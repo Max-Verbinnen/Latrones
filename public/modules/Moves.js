@@ -1,5 +1,6 @@
 let squares = document.querySelectorAll('.area');
 
+
 export const isYourPiece = (elem, playerNumber) => {
   let num;
   if (elem.id.includes("w")) {
