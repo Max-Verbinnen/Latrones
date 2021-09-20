@@ -238,7 +238,7 @@ header .right .square.top-right img {
 .grid {
   display: grid;
   grid-template-columns: repeat(8, 80px);
-  background: url("./assets/bg.jpg") no-repeat center;
+  background: url("../assets/bg.jpg") no-repeat center;
   border-radius: 1rem;
   padding: 1rem;
   margin: 0.5rem 0;
@@ -304,19 +304,19 @@ header .right .square.top-right img {
 }
 
 .fill.bp {
-  background: url("./assets/b-pawn.svg") no-repeat center;
+  background: url("../assets/b-pawn.svg") no-repeat center;
 }
 
 .fill.wp {
-  background: url("./assets/w-pawn.svg") no-repeat center;
+  background: url("../assets/w-pawn.svg") no-repeat center;
 }
 
 .fill.bd {
-  background: url("./assets/b-dux.svg") no-repeat center;
+  background: url("../assets/b-dux.svg") no-repeat center;
 }
 
 .fill.wd {
-  background: url("./assets/w-dux.svg") no-repeat center;
+  background: url("../assets/w-dux.svg") no-repeat center;
 }
 
 .hovered {
