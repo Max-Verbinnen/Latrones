@@ -1,4 +1,6 @@
-export const setNotation = (playerNumber) => {
+let arrows = [];
+
+export const setNotation = (playerNumber, oldArrows) => {
   const areas = document.querySelectorAll(".area");
   areas.forEach(area => {
     let index = Array.prototype.indexOf.call(areas, area);
@@ -22,15 +24,18 @@ export const setNotation = (playerNumber) => {
       }
     }
   });
+
+  // Arrows from main file
+  arrows = oldArrows;
 }
 
-export const resetNotation = (playerNumber) => {
+export const resetNotation = (playerNumber, oldArrows) => {
   const notations = document.querySelectorAll("#notation");
   notations.forEach(notation => notation.remove());
-  setNotation(playerNumber);
+  setNotation(playerNumber, oldArrows);
 }
 
-export const drawArrows = (elem, playerNumber, arrows) => {
+export const drawArrows = (elem, playerNumber) => {
   elem.forEach(notation => {
     notation.addEventListener("click", () => {
       let regex = /[a-h]{1}\d{1}-[a-h]{1}\d{1}/;
@@ -54,4 +59,15 @@ export const drawArrows = (elem, playerNumber, arrows) => {
       arrows.push(arrow);
     });
   });
+
+  return arrows;
+}
+
+export const removeArrows = () => {
+  if (!arrows || arrows.length === 0) return [];
+
+  arrows.forEach(arrow => arrow.remove());
+  arrows = [];
+
+  return arrows;
 }

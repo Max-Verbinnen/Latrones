@@ -2,6 +2,7 @@
 import {
   setNotation,
   resetNotation,
+  removeArrows,
 } from "./modules/Notation.js";
 
 import {
@@ -90,12 +91,12 @@ function handleInit({ html, number }) {
   }
 
   // Set notation on board (letters & numbers)
-  setNotation(playerNumber);
+  setNotation(playerNumber, arrows);
 }
 
 function handleMove({ html, capture }) {
   grid.innerHTML = html;
-  resetNotation(playerNumber);
+  resetNotation(playerNumber, arrows);
   
   // When you get move back from server it is your turn
   yourTurn = true;
@@ -105,8 +106,7 @@ function handleMove({ html, capture }) {
   pauseTimer(opponentCountdown);
 
   // Remove arrows
-  arrows?.forEach(arrow => arrow.remove());
-  arrows = [];
+  arrows = removeArrows();
 
   // Play audio
   if (capture) {
@@ -224,7 +224,7 @@ const notationLink = document.querySelector(".notation-link");
 
 form.addEventListener("submit", e => handleChatFormSubmit(e, playerNumber, socket));
 socket.on("chat", ({ msg, nr }) => handleChatEvent(msg, nr, playerNumber));
-socket.on("notation", move => handleNotationEvent(move, playerNumber, arrows));
+socket.on("notation", move => arrows = handleNotationEvent(move, playerNumber));
 
 chatLink.addEventListener("click", handleNavSwitch);
 notationLink.addEventListener("click", handleNavSwitch);
@@ -338,8 +338,7 @@ function game() {
       pauseTimer(yourCountdown);
       opponentCountdown = startTimer("opponent", playerNumber, socket);
 
-      arrows?.forEach(arrow => arrow.remove());
-      arrows = [];
+      arrows = removeArrows();
     }
   }
 }

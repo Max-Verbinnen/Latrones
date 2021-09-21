@@ -26,7 +26,7 @@ export const handleChatEvent = (msg, nr, playerNumber) => {
   output.scrollTop = output.scrollHeight;
 }
 
-export const handleNotationEvent = (move, playerNumber, arrows) => {
+export const handleNotationEvent = (move, playerNumber) => {
   count++;
 
   // If this is a move in the same "set" (i.e. a pair of 2 moves)
@@ -39,10 +39,12 @@ export const handleNotationEvent = (move, playerNumber, arrows) => {
 
   // Draw arrows when clicking notations
   const notationMoves = document.querySelectorAll(".notation-move");
-  drawArrows(notationMoves, playerNumber, arrows);
+  const newArrows = drawArrows(notationMoves, playerNumber);
 
   // Automatic scroll down
   moves.scrollTop = moves.scrollHeight;
+
+  return newArrows;
 }
 
 export const handleNavSwitch = (e) => {
